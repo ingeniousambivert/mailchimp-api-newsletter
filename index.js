@@ -4,11 +4,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const request = require("request");
 const crypto = require("crypto");
-
+const methodOverride = require("method-override");
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
-
+app.use(methodOverride(req => req.body._method));
 // GET Request on INDEX
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/subscribe.html");
@@ -63,14 +63,15 @@ app.get("/unsubscribe", (req, res) => {
   res.sendFile(__dirname + "/unsubscribe.html");
 });
 // PATCH Request on Unsubscribe
-app.patch("/unsubscribe", (req, res) => {
+app.put("/unsubscribe", (req, res) => {
   const { email } = req.body;
   const data = {
     members: [
       {
         status: "unsubscribed"
       }
-    ]
+    ],
+    update_existing: true
   };
   const api_email = email.toLowerCase();
   let hash = crypto
@@ -80,7 +81,7 @@ app.patch("/unsubscribe", (req, res) => {
 
   const JSONData = JSON.stringify(data);
 
-  if (!firstname || !lastname || !email) {
+  if (!email) {
     res.sendFile(__dirname + "/failed.html");
     res.status(400);
   } else {
@@ -102,9 +103,8 @@ app.patch("/unsubscribe", (req, res) => {
 
   request(options, (err, response, body) => {
     console.log(response.statusCode);
-    console.log(hash);
     console.log(`PATCH REQUEST FOR UNSUBSCRIBE ${body}`);
   });
 });
 
-app.listen(5000, console.log("Server ON - Port : 5000"));
+app.listen(5001, console.log("Server ON - Port : 5001"));
