@@ -63,15 +63,10 @@ app.get("/unsubscribe", (req, res) => {
   res.sendFile(__dirname + "/unsubscribe.html");
 });
 // PATCH Request on Unsubscribe
-app.put("/unsubscribe", (req, res) => {
+app.patch("/unsubscribe", (req, res) => {
   const { email } = req.body;
   const data = {
-    members: [
-      {
-        status: "unsubscribed"
-      }
-    ],
-    update_existing: true
+    status: "unsubscribed"
   };
   const api_email = email.toLowerCase();
   let hash = crypto
