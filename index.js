@@ -44,10 +44,10 @@ app.post("/", (req, res) => {
     }
   }
   const options = {
-    url: "https://us18.api.mailchimp.com/3.0/lists/8bd6f842d1",
+    url: "https://<DC>.api.mailchimp.com/3.0/lists/{list_id}",
     method: "POST",
     headers: {
-      Authorization: "auth deed85fccbcc5e5f0f54d7acb8629242-us18"
+      Authorization: "auth api_key"
     },
     body: postData
   };
@@ -88,10 +88,10 @@ app.patch("/unsubscribe", (req, res) => {
     }
   }
   const options = {
-    url: `https://us18.api.mailchimp.com/3.0/lists/8bd6f842d1/members/${hash}`,
+    url: `https://<DC>.api.mailchimp.com/3.0/lists/{list_id}/members/${hash}`,
     method: "PATCH",
     headers: {
-      Authorization: "auth deed85fccbcc5e5f0f54d7acb8629242-us18"
+      Authorization: "auth api_key"
     },
     body: JSONData
   };
